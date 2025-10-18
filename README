@@ -1,0 +1,131 @@
+# ESP32 Multi-Servo Control Project
+
+## Project Overview
+This project demonstrates **smooth speed-controlled servo motor movement** using an **ESP32**. It supports both **single and multiple servo motors** and allows gradual position changes to prevent sudden jumps, providing precise and reliable motion control.
+
+The project is built using:
+- **ESP32** microcontroller
+- **ESP32Servo library** for PWM servo control
+- Custom modules:
+  - `Speed_Control.h` — for gradual speed-controlled motion
+  - `Multi_Servo.h` — for managing multiple servos simultaneously
+
+---
+
+## Features
+- Smooth servo movement with adjustable speed  
+- Control of a single servo or multiple servos simultaneously  
+- Easy-to-use initialization functions  
+- Configurable PWM parameters (pulse width and frequency)  
+- Lightweight and modular design for easy integration
+
+---
+
+## Hardware Requirements
+- ESP32 development board  
+- Servo motors (1–4)  
+- External power supply for servos (recommended)  
+- Jumper wires  
+- Breadboard (optional)
+
+---
+
+## Software Requirements
+- **PlatformIO** (recommended inside VSCode)  
+- Libraries:
+  - `ESP32Servo`
+
+---
+
+## PlatformIO Project Setup
+
+1. **Create a new PlatformIO project** for your ESP32 board.  
+2. Place your files in the `src/` folder:
+   - `main.cpp` (your main Arduino code)  
+   - `Speed_Control.h` / `Speed_Control.cpp`  
+   - `Multi_Servo.h` / `Multi_Servo.cpp`  
+3. Ensure your `platformio.ini` file includes the ESP32 board configuration. Example:
+```ini
+[env:esp32doit-devkit-v1]
+platform = espressif32
+board = esp32doit-devkit-v1
+framework = arduino
+lib_deps = madhephaestus/ESP32Servo@^3.0.5
+lib_extra_dirs = lib/Speed_Control.h lib/Multi_Servo.h
+```
+4. Connect your ESP32 board to your computer.
+
+---
+
+## Pin Configuration
+| Servo | ESP32 Pin |
+|-------|-----------|
+| Servo 1 | 14        |
+| Servo 2 | 15        |
+| Servo 3 | 16        |
+| Servo 4 | 17        |
+
+> Modify `servppins[]` in your code to match your wiring.
+
+---
+
+## Usage
+
+### Initialization
+- **Single Servo**  
+```cpp
+Single_Servo_init(myservo, servoPin);
+```
+- **Multiple Servos**  
+```cpp
+Multi_Servos_init(myserv, servppins);
+```
+
+### Speed-Controlled Movement
+- **Single Servo**
+```cpp
+Speed_Control_Single(speed, target_angle, servoPin, myservo, &prev_sin);
+```
+- **Multiple Servos**
+```cpp
+Speed_Control_Multi(&speed, angles, servppins, myserv, &prev_mul);
+```
+
+**Parameters:**
+- `speed`: Movement speed (0–100)  
+- `target_angle` / `angles[]`: Desired servo angles (0–180°)  
+- `servoPin` / `servppins[]`: GPIO pins connected to servos  
+- `myservo` / `myserv[]`: Servo objects  
+- `prev_sin` / `prev_mul`: Variable to store previous timestamps for smooth motion  
+
+> Optional: Set `instat = true` for gradual movement; default is `false` for instant movement.
+
+---
+
+## Example Loop
+```cpp
+void loop() {
+    Speed_Control_Single(50, 180, servoPin, myservo, &prev_sin);
+    Speed_Control_Multi(&speed, angles, servppins, myserv, &prev_mul);
+}
+```
+- Moves the single servo to 180° at medium speed.  
+- Simultaneously moves all servos in `angles[]` array at configured speeds.
+
+---
+
+## Notes
+- Servos draw considerable current; use an **external power source** for multiple servos.  
+- Ensure proper grounding between ESP32 and servo power supply.  
+- Adjust `interval` mapping in `Speed_Control.h` for finer speed control.
+
+---
+
+## Why Choose This Project
+- Modular and clean code for easy integration  
+- Supports multiple servos with independent speed control  
+- Smooth motion control reduces mechanical stress and improves precision  
+- Easily extendable for robotics or automation projects
+
+
+
