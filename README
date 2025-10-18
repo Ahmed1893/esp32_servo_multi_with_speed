@@ -42,9 +42,11 @@ The project is built using:
 1. **Create a new PlatformIO project** for your ESP32 board.  
 2. Place your files in the `src/` folder:
    - `main.cpp` (your main Arduino code)  
+3. Place your files in the `lib/Speed_Control` folder:
    - `Speed_Control.h` / `Speed_Control.cpp`  
+4. Place your files in the `lib/Multi_Servo` folder:
    - `Multi_Servo.h` / `Multi_Servo.cpp`  
-3. Ensure your `platformio.ini` file includes the ESP32 board configuration. Example:
+5. Ensure your `platformio.ini` file includes the ESP32 board configuration. Example:
 ```ini
 [env:esp32doit-devkit-v1]
 platform = espressif32
